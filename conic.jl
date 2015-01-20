@@ -1,17 +1,15 @@
 using JuMP
-using Clp
 using Gurobi
 using CPLEX
 using MathProgBase
 
 require("MIQCPGenerator.jl")
-require("timer.jl")
 
 
 
 function addTower(threeDimImplementation::Function,epsilon::Float64=0.01)
 
-	function implementTower(model::Model, y::JuMP.JuMPDict, ys::JuMP.JuMPDict, t::JuMP.Variable, threeDimCones::Array{Array{JuMP.Variable}})
+	function implementTower(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}})
 
 	 	dim = length(y)
 	 	K = ceil(log(2,dim))
@@ -24,7 +22,7 @@ function addTower(threeDimImplementation::Function,epsilon::Float64=0.01)
 	 		numNextLevelVars = convert(Integer,ceil(numCurrentLevelVars/2.0))
 	 		nextLevelVars = Array(Variable,numNextLevelVars)
 	 		for i in 1:floor(numCurrentLevelVars/2.0)
-	 			nextLevelVars[i] = Variable(model,0,Inf,JuMP.CONTINUOUS)
+	 			nextLevelVars[i] = Variable(model,0,Inf,:Cont)
 	 		end 
 	 		for i in 1:floor(numCurrentLevelVars/2.0)
 	 			threeDimImplementation(threeDimCones,model,currentLevelVars[2*i-1],currentLevelVars[2*i],nextLevelVars[i],convert(Integer,ceil((k+1)/2)-skb))
@@ -42,7 +40,7 @@ function addTower(threeDimImplementation::Function,epsilon::Float64=0.01)
 
 end
 
-function SeparableThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x::JuMP.Variable,  y::JuMP.Variable,  t::JuMP.Variable, k::Integer )
+function SeparableThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k )
 	@defVar(model, xs >= 0)
 	@defVar(model, ys >= 0) 
 	@addConstraint(model, xs + ys <= t)
@@ -51,12 +49,12 @@ function SeparableThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model
 	push!(threeDimCones,[x,y,t,xs,ys])
 end
 
-function StandardThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x::JuMP.Variable,  y::JuMP.Variable,  t::JuMP.Variable, k::Integer )
+function StandardThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k )
 	push!(threeDimCones,[x,y,t])
 	addConstraint(model, x^2 + y^2 <= t^2)
 end
 
-function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x::JuMP.Variable,  y::JuMP.Variable,  t::JuMP.Variable, k::Integer  )
+function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k  )
 	push!(threeDimCones,[x,y,t])
 	alpha = Array(Variable,k+1)
 	beta = Array(Variable,k+1)
@@ -66,8 +64,8 @@ function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Mo
  		currentCos = cos(pi/(2^(j-1)))
  		currentSin = sin(pi/(2^(j-1)))
 
- 		alpha[j+1] = Variable(model,-Inf,Inf,JuMP.CONTINUOUS)
-		beta[j+1] = Variable(model,-Inf,Inf,JuMP.CONTINUOUS)
+ 		alpha[j+1] = Variable(model,-Inf,Inf,:Cont)
+		beta[j+1] = Variable(model,-Inf,Inf,:Cont)
 
 		@addConstraint(model, alpha[j+1] == currentCos*alpha[j] + currentSin*beta[j])
 		@addConstraint(model, beta[j+1] >= currentCos*beta[j] - currentSin*alpha[j])
@@ -76,7 +74,7 @@ function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Mo
 	@addConstraint(model, t == cos(pi/(2^(k)))*alpha[k+1] + sin(pi/(2^(k)))*beta[k+1])
 end
 
-function BNGLISepThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x::JuMP.Variable,  y::JuMP.Variable,  t::JuMP.Variable, k::Integer  )
+function BNGLISepThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k  )
 	@defVar(model, xs >= 0)
 	@defVar(model, ys >= 0) 
 	@addConstraint(model, xs + ys <= t)
@@ -89,8 +87,8 @@ function BNGLISepThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model:
  		currentCos = cos(pi/(2^(j-1)))
  		currentSin = sin(pi/(2^(j-1)))
 
- 		alpha[j+1] = Variable(model,-Inf,Inf,JuMP.CONTINUOUS)
-		beta[j+1] = Variable(model,-Inf,Inf,JuMP.CONTINUOUS)
+ 		alpha[j+1] = Variable(model,-Inf,Inf,:Cont)
+		beta[j+1] = Variable(model,-Inf,Inf,:Cont)
 
 		@addConstraint(model, alpha[j+1] == currentCos*alpha[j] + currentSin*beta[j])
 		@addConstraint(model, beta[j+1] >= currentCos*beta[j] - currentSin*alpha[j])
@@ -99,12 +97,12 @@ function BNGLISepThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model:
 	@addConstraint(model, t == cos(pi/(2^(k)))*alpha[k+1] + sin(pi/(2^(k)))*beta[k+1])
 end
 
-function implementSOCPSeparableBase(model::Model, y::JuMP.JuMPDict, ys::JuMP.JuMPDict, t::JuMP.Variable, threeDimCones::Array{Array{JuMP.Variable}})
+function implementSOCPSeparableBase(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}})
 	dim=length(y)
 	@addConstraint(model, sum{ ys[i], i = 1:dim} <= t)
 end
 
-function implementSOCPSeparable(model::Model, y::JuMP.JuMPDict, ys::JuMP.JuMPDict, t::JuMP.Variable, threeDimCones::Array{Array{JuMP.Variable}})
+function implementSOCPSeparable(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}})
 	dim=length(y)
 	@addConstraint(model, sum{ ys[i], i = 1:dim} <= t)
 	for i in 1:dim
@@ -112,7 +110,7 @@ function implementSOCPSeparable(model::Model, y::JuMP.JuMPDict, ys::JuMP.JuMPDic
 	end
 end
 
-function implementSOCPStandard(model::Model, y::JuMP.JuMPDict, ys::JuMP.JuMPDict, t::JuMP.Variable, threeDimCones::Array{Array{JuMP.Variable}} )
+function implementSOCPStandard(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}} )
 	dim=length(y)
 	addConstraint(model, sum([y[i]^2 for i=1:dim]) <= t^2)
 end
@@ -182,14 +180,14 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,solver=MathProgBase.de
     	for i in 1:dim
     		if equality
 	            @addConstraint(model, y[k][i] == sum{ D.nzval[idx]*x[D.rowval[idx]],
-                	idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ E.nzval[idx]*z[D.rowval[idx]],
+                	idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ E.nzval[idx]*z[E.rowval[idx]],
                 	idx = E.colptr[i]:(E.colptr[i+1]-1)} - d[i] )
         	else
         		@addConstraint(model, y[k][i] >= sum{ D.nzval[idx]*x[D.rowval[idx]],
-                	idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ E.nzval[idx]*z[D.rowval[idx]],
+                	idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ E.nzval[idx]*z[E.rowval[idx]],
                 	idx = E.colptr[i]:(E.colptr[i+1]-1)} - d[i] )
                 @addConstraint(model, y[k][i] >= sum{ - D.nzval[idx]*x[D.rowval[idx]],
-                	idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ - E.nzval[idx]*z[D.rowval[idx]],
+                	idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ - E.nzval[idx]*z[E.rowval[idx]],
                 	idx = E.colptr[i]:(E.colptr[i+1]-1)} + d[i] )
         	end
         end
@@ -332,7 +330,7 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
 	threeDimConesstar = []
 
 	function branchcallback(cb)
-	
+		
 	    feas = cbgetintfeas(cb)
 	    z_val = getValue(z)
 
@@ -359,14 +357,15 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
 	    	if !fixed
 	    		obj = getCorrectedSolution(prob, [ lb[z[i].col]  for i=1:length(prob.f) ], [ ub[z[i].col]  for i=1:length(prob.f) ], hz, hx, hy, hys,  ht, hmodel, hthreeDimCones, xstar, zstar, ystar, ysstar, tstar, threeDimConesstar, incumbentobj)	
 	    		if obj < incumbentobj
-	    			addBranch(cb, z[firstfractional] >= floor(z_val[firstfractional]) + 1, objval)
-	    			addBranch(cb, z[firstfractional] <= floor(z_val[firstfractional]) , objval)
+	    			addBranch(cb, z[firstfractional] >= floor(z_val[firstfractional]) + 1, obj)
+	    			addBranch(cb, z[firstfractional] <= floor(z_val[firstfractional]) , obj)
 	    		end	
 	    	end
 	    end
 	end
 
 	function heuristic(cb)
+		
 		if newincumbent
 			for i in 1:length(prob.c)
 				setSolutionValue!(cb, x[i], xstar[i])
@@ -491,9 +490,12 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
 				t_val = getValue(threeDimCones[k][i][3])
 
 				for i in 1:2
-					a = sqrt((2*y_val[i])^2+(ys_val[i]-t_val)^2)
-					if a > 1e-6 + t_val +ys_val[i]
-						@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
+					#a = sqrt((2*y_val[i])^2+(ys_val[i]-t_val)^2)
+					#if a > 1e-6 + t_val +ys_val[i]
+					if y_val[i]^2 > 1e-6 + t_val*ys_val[i]
+						#@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
+						a = y_val[i]/t_val
+						@addLazyConstraint(cb,  2*a*y[k][i] - a^2*t[k] <= ys[k][i] )
 						separated = true
 					end	
 				end
@@ -521,9 +523,12 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
 			dim = length(prob.d[k])
 
 			for i in 1:dim
-				a = sqrt((2*y_val[i])^2+(ys_val[i]-t_val)^2)
-				if a > 1e-6 + t_val +ys_val[i]
-					@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
+				#a = sqrt((2*y_val[i])^2+(ys_val[i]-t_val)^2)
+				#if a > 1e-6 + t_val +ys_val[i]
+				if y_val[i]^2 > 1e-6 + t_val*ys_val[i]
+					#@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
+					a = y_val[i]/t_val
+					@addLazyConstraint(cb,  2*a*y[k][i] - a^2*t[k] <= ys[k][i] )
 					separated = true
 				end	
 			end
@@ -628,22 +633,22 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
 end	
 
 function solveInstance(misocp,results,name,solver;cplexbasesolver=true)
-	tic();
-	usertime=userTime();
-	usersystime=userAndSystemTime();
+	
 	m, x, z, y, ys, t = solver()
+	tic();
 	solve(m)
 	solvetime = toc();
-	usersolvetime = userTime()-usertime;
-	usersystimesolvetime = userAndSystemTime()-usersystime;
 	quadraticinf, linearinf, boundsinf = checkPrimalSolutionQuality(misocp,getValue(x),getValue(z))
 	nodes=0
+	bestbound = 0
 	if cplexbasesolver
 		nodes=CPLEX.getnodecnt(m.internalModel)
+		bestbound = CPLEX.getobjbound(m.internalModel)
 	else
 		nodes=Gurobi.get_node_count(getrawsolver(m.internalModel))
+		bestbound = Gurobi.getobjbound(m.internalModel)
 	end
-	push!(results,[name, getObjectiveValue(m),solvetime,usersolvetime,usersystimesolvetime,nodes,quadraticinf, linearinf, boundsinf])
+	push!(results,[name, getObjectiveValue(m),solvetime,nodes,quadraticinf, linearinf, boundsinf,bestbound,100.0*abs(bestbound-getObjectiveValue(m))/getObjectiveValue(m)])
 end
 
 

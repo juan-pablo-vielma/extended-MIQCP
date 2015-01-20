@@ -81,93 +81,58 @@ function GurobiQcp(misocp,results)
 	solveInstance(misocp,results,"GurobiQCP",solver,cplexbasesolver=false)
 end
 
-function printstats(results,statsfile)
-	resultData = Dict()
-	for result in results
-		if !haskey(resultData,result[1])
-				resultData[result[1]]=Array(Array{Float64},3)
-			fill!(resultData[result[1]],[])
-		end
-		push!(resultData[result[1]][1],result[4])
-		push!(resultData[result[1]][2],result[6])
-		push!(resultData[result[1]][3],maximum([result[7],result[8],result[9]]))
-	end
-	println(statsfile,"Time")
-	for solver in keys(resultData)
-		methodData = resultData[solver][1]
-		for i in [solver,minimum(methodData),  mean(methodData), maximum(methodData),std(methodData)]
-			print(statsfile,i,repeat(" ",25-length(string(i))))
-		end
-		println(statsfile,"")
-	end
-	println(statsfile,"Nodes")
-	for solver in keys(resultData)
-		methodData = resultData[solver][2]
-		for i in [solver,minimum(methodData),  mean(methodData), maximum(methodData),std(methodData)]
-			print(statsfile,i,repeat(" ",25-length(string(i))))
-		end
-		println(statsfile,"")
-	end
-	println(statsfile,"Quality")
-	for solver in keys(resultData)
-		methodData = resultData[solver][3]
-		for i in [solver,minimum(methodData),  mean(methodData), maximum(methodData),std(methodData)]
-			print(statsfile,i,repeat(" ",25-length(string(i))))
-		end
-		println(statsfile,"")
-	end
-	flush(statsfile)
-end
 
-function test(instancesize,resultfilename,statsfilename,solvers)
+function test(instancesize,resultfilename,solvers,mark=true,short=true,robust=true)
 
 	resultfile = open(resultfilename,"a")
-	statsfile = open(statsfilename,"a")
 	resultsMark = {}
 	resultsShort = {}
 	resultsRobust = {}
 	
 	files = filter!(Regex(string("portfolio_",instancesize,"_.*\.por")), readdir("portfolios"))
 	
-	for file in files
-		misocp = buildMarkowitzPor(joinpath("portfolios", file))
-		for solver in solvers
-			solver(misocp,resultsMark)
-			println(resultfile, "Mark,",instancesize,",",file,",",join(resultsMark[length(resultsMark)],",")); flush(resultfile)
+	if mark
+		for file in files
+			misocp = buildMarkowitzPor(joinpath("portfolios", file))
+			for solver in solvers
+				solver(misocp,resultsMark)
+				println(resultfile, "Mark,",instancesize,",",file,",",join(resultsMark[length(resultsMark)],",")); flush(resultfile)
+			end
 		end
 	end
-	println(statsfile,"Mark ",instancesize)
-	printstats(resultsMark,statsfile)
-	for file in files
-		misocp = buildShortfallPor(joinpath("portfolios", file))
-		for solver in solvers
-			solver(misocp,resultsShort)
-			println(resultfile, "Short,",instancesize,",",file,",",join(resultsShort[length(resultsShort)],",")); flush(resultfile)
+	if short	
+		for file in files
+			misocp = buildShortfallPor(joinpath("portfolios", file))
+			for solver in solvers
+				solver(misocp,resultsShort)
+				println(resultfile, "Short,",instancesize,",",file,",",join(resultsShort[length(resultsShort)],",")); flush(resultfile)
+			end
 		end
-	end
-	println(statsfile,"Short ",instancesize)
-	printstats(resultsShort,statsfile)
-	files = filter!(Regex(string("robust_portfolio_",instancesize,"_.*\.por")), readdir("robust_portfolios"))
-	for file in files
-		misocp = buildRobustMarkowitzPor(joinpath("robust_portfolios", file))
-		for solver in solvers
-			solver(misocp,resultsRobust)
-			println(resultfile, "Robust,",instancesize,",",file,",",join(resultsRobust[length(resultsRobust)],",")); flush(resultfile)
+	end	
+
+	if robust
+		files = filter!(Regex(string("robust_portfolio_",instancesize,"_.*\.por")), readdir("robust_portfolios"))
+		for file in files
+			misocp = buildRobustMarkowitzPor(joinpath("robust_portfolios", file))
+			for solver in solvers
+				solver(misocp,resultsRobust)
+				println(resultfile, "Robust,",instancesize,",",file,",",join(resultsRobust[length(resultsRobust)],",")); flush(resultfile)
+			end
 		end
-	end
-	println(statsfile,"Robust ",instancesize)
-	printstats(resultsRobust,statsfile)
+	end	
 end
 
 
-test(20,"results.csv","stats.csv",[ LiftedLpBN, 
-									CplexSepLazyBN, GurobiSepLazyBN, CplexTowerLazyBN, GurobiTowerLazyBN, CplexTowerSepLazyBN, GurobiTowerSepLazyBN,
-									CplexSepLp,	    GurobiSepLp,     CplexTowerLp,     GurobiTowerLp,     CplexTowerSepLp,     GurobiTowerSepLp,
-									CplexLp,     GurobiLp,
-									CplexQcp,       GurobiQcp    ])
-test(30,"results.csv","stats.csv",[ LiftedLpBN, 
-									CplexSepLazyBN, GurobiSepLazyBN, CplexTowerLazyBN, GurobiTowerLazyBN, CplexTowerSepLazyBN, GurobiTowerSepLazyBN,
-									CplexSepLp,	    GurobiSepLp,     CplexTowerLp,     GurobiTowerLp,     CplexTowerSepLp,     GurobiTowerSepLp,
-									CplexLp,     GurobiLp,
-									CplexQcp,       GurobiQcp    ])
+test(20,ARGS[1],	[ CplexSepLazyBN ])
+
+# test(20,"results.csv","stats.csv",[ LiftedLpBN, 
+# 									CplexSepLazyBN, GurobiSepLazyBN, CplexTowerLazyBN, GurobiTowerLazyBN, CplexTowerSepLazyBN, GurobiTowerSepLazyBN,
+# 									CplexSepLp,	    GurobiSepLp,     CplexTowerLp,     GurobiTowerLp,     CplexTowerSepLp,     GurobiTowerSepLp,
+# 									CplexLp,     GurobiLp,
+# 									CplexQcp,       GurobiQcp    ])
+# test(30,"results.csv","stats.csv",[ LiftedLpBN, 
+# 									CplexSepLazyBN, GurobiSepLazyBN, CplexTowerLazyBN, GurobiTowerLazyBN, CplexTowerSepLazyBN, GurobiTowerSepLazyBN,
+# 									CplexSepLp,	    GurobiSepLp,     CplexTowerLp,     GurobiTowerLp,     CplexTowerSepLp,     GurobiTowerSepLp,
+# 									CplexLp,     GurobiLp,
+# 									CplexQcp,       GurobiQcp    ])
 
