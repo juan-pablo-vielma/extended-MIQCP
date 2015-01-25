@@ -44,14 +44,14 @@ function SeparableThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model
     @defVar(model, xs >= 0)
     @defVar(model, ys >= 0)
     @addConstraint(model, xs + ys <= t)
-    addConstraint(model, x^2 <= xs*t)
-    addConstraint(model, y^2 <= ys*t)
+    @addConstraint(model, x^2 <= xs*t)
+    @addConstraint(model, y^2 <= ys*t)
     push!(threeDimCones,[x,y,t,xs,ys])
 end
 
 function StandardThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k )
     push!(threeDimCones,[x,y,t])
-    addConstraint(model, x^2 + y^2 <= t^2)
+    @addConstraint(model, x^2 + y^2 <= t^2)
 end
 
 function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k  )
@@ -60,11 +60,11 @@ function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Mo
     beta = Array(Variable,k+1)
     alpha[1] = x
     beta[1] = y
-     for j in 1:k
-         currentCos = cos(pi/(2^(j-1)))
-         currentSin = sin(pi/(2^(j-1)))
+    for j in 1:k
+        currentCos = cos(pi/(2^(j-1)))
+        currentSin = sin(pi/(2^(j-1)))
 
-         alpha[j+1] = Variable(model,-Inf,Inf,:Cont)
+        alpha[j+1] = Variable(model,-Inf,Inf,:Cont)
         beta[j+1] = Variable(model,-Inf,Inf,:Cont)
 
         @addConstraint(model, alpha[j+1] == currentCos*alpha[j] + currentSin*beta[j])
@@ -106,13 +106,13 @@ function implementSOCPSeparable(model::Model, y, ys, t, threeDimCones::Array{Arr
     dim=length(y)
     @addConstraint(model, sum{ ys[i], i = 1:dim} <= t)
     for i in 1:dim
-        addConstraint(model,y[i]^2<=ys[i]*t)
+        @addConstraint(model,y[i]^2<=ys[i]*t)
     end
 end
 
 function implementSOCPStandard(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}} )
     dim=length(y)
-    addConstraint(model, sum([y[i]^2 for i=1:dim]) <= t^2)
+    @addConstraint(model, sum{y[i]^2, i=1:dim} <= t^2)
 end
 
 
@@ -192,7 +192,6 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,solver=MathProgBase.de
             end
         end
         @addConstraint(model, t[k] == sum{ p[j]*x[j], j = 1:nx } + sum{ w[j]*z[j], j = 1:nz } - q)
-            # macros don't yet accept quadratic terms
         for implementation  in SOCPImplementations
             implementation(model, y[k], ys[k], t[k], threeDimCones[k])
         end
