@@ -9,7 +9,7 @@ require("MIQCPGenerator.jl")
 
 function addTower(threeDimImplementation::Function,epsilon::Float64=0.01)
 
-    function implementTower(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}})
+    function implementTower(model::Model, y, ys, t, threeDimCones::Vector{Vector{JuMP.Variable}})
 
          dim = length(y)
          K = ceil(log(2,dim))
@@ -40,7 +40,7 @@ function addTower(threeDimImplementation::Function,epsilon::Float64=0.01)
 
 end
 
-function SeparableThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k )
+function SeparableThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::Model, x,  y,  t, k )
     @defVar(model, xs >= 0)
     @defVar(model, ys >= 0)
     @addConstraint(model, xs + ys <= t)
@@ -49,12 +49,12 @@ function SeparableThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model
     push!(threeDimCones,[x,y,t,xs,ys])
 end
 
-function StandardThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k )
+function StandardThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::Model, x,  y,  t, k )
     push!(threeDimCones,[x,y,t])
     @addConstraint(model, x^2 + y^2 <= t^2)
 end
 
-function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k  )
+function BNGLIThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::Model, x,  y,  t, k  )
     push!(threeDimCones,[x,y,t])
     alpha = Array(Variable,k+1)
     beta = Array(Variable,k+1)
@@ -74,7 +74,7 @@ function BNGLIThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Mo
     @addConstraint(model, t == cos(pi/(2^(k)))*alpha[k+1] + sin(pi/(2^(k)))*beta[k+1])
 end
 
-function BNGLISepThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model::Model, x,  y,  t, k  )
+function BNGLISepThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::Model, x,  y,  t, k  )
     @defVar(model, xs >= 0)
     @defVar(model, ys >= 0)
     @addConstraint(model, xs + ys <= t)
@@ -97,12 +97,12 @@ function BNGLISepThreeDimCone(threeDimCones::Array{Array{JuMP.Variable}}, model:
     @addConstraint(model, t == cos(pi/(2^(k)))*alpha[k+1] + sin(pi/(2^(k)))*beta[k+1])
 end
 
-function implementSOCPSeparableBase(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}})
+function implementSOCPSeparableBase(model::Model, y, ys, t, threeDimCones::Vector{Vector{JuMP.Variable}})
     dim=length(y)
     @addConstraint(model, sum{ ys[i], i = 1:dim} <= t)
 end
 
-function implementSOCPSeparable(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}})
+function implementSOCPSeparable(model::Model, y, ys, t, threeDimCones::Vector{Vector{JuMP.Variable}})
     dim=length(y)
     @addConstraint(model, sum{ ys[i], i = 1:dim} <= t)
     for i in 1:dim
@@ -110,7 +110,7 @@ function implementSOCPSeparable(model::Model, y, ys, t, threeDimCones::Array{Arr
     end
 end
 
-function implementSOCPStandard(model::Model, y, ys, t, threeDimCones::Array{Array{JuMP.Variable}} )
+function implementSOCPStandard(model::Model, y, ys, t, threeDimCones::Vector{Vector{JuMP.Variable}} )
     dim=length(y)
     @addConstraint(model, sum{y[i]^2, i=1:dim} <= t^2)
 end
@@ -156,7 +156,7 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,solver=MathProgBase.de
     y = Dict()
     ys = Dict()
     @defVar(model, t[1:nsoc] >= 0)
-    threeDimCones = Array(Array{Array{JuMP.Variable}},nsoc)
+    threeDimCones = Array(Vector{Vector{JuMP.Variable}},nsoc)
     fill!(threeDimCones,[])
     for k in 1:nsoc
 
@@ -192,7 +192,7 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,solver=MathProgBase.de
             end
         end
         @addConstraint(model, t[k] == sum{ p[j]*x[j], j = 1:nx } + sum{ w[j]*z[j], j = 1:nz } - q)
-        for implementation  in SOCPImplementations
+        for implementation in SOCPImplementations
             implementation(model, y[k], ys[k], t[k], threeDimCones[k])
         end
     end
@@ -617,9 +617,9 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
     elseif separable == 1
         setLazyCallback(model, sepSeparator)
     else
-        threeDimConesstar = Array(Array{Array{Float64}},nsoc)
+        threeDimConesstar = Array(Vector{Vector{Float64}},nsoc)
         for k in 1:nsoc
-            threeDimConesstar[k]=Array(Array{Float64},length(hthreeDimCones[k]))
+            threeDimConesstar[k]=Array(Vector{Float64},length(hthreeDimCones[k]))
         end
         setLazyCallback(model, towerSeparator)
     end
