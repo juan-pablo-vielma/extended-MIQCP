@@ -111,9 +111,9 @@ function test(instancesize,resultfilename,solvers,mark=true,short=true,robust=tr
 	end	
 
 	if robust
-		files = filter!(Regex(string("robust_portfolio_",instancesize,"_.*\.por")), readdir("robust_portfolios"))
+		files = filter!(Regex(string("robustportfolio_",instancesize,"_.*\.por")), readdir("robustportfolios"))
 		for file in files
-			misocp = buildRobustMarkowitzPor(joinpath("robust_portfolios", file))
+			misocp = buildRobustMarkowitzPor(joinpath("robustportfolios", file))
 			for solver in solvers
 				solver(misocp,resultsRobust)
 				println(resultfile, "Robust,",instancesize,",",file,",",join(resultsRobust[length(resultsRobust)],",")); flush(resultfile)
