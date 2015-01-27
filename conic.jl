@@ -343,7 +343,7 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
 
         if feasible
             lb = cbgetnodelb(cb)
-            ub = cbgetnodelb(cb)
+            ub = cbgetnodeub(cb)
             fixed = true
             firstfractional = 0
             for i in 1:length(prob.f)
