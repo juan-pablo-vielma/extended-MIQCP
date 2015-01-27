@@ -17,20 +17,20 @@ function addTower(threeDimImplementation::Function, epsilon::Float64=0.01)
          numCurrentLevelVars = dim
          for k in 1:K-1
 
-             numNextLevelVars = iceil(numCurrentLevelVars/2.0)
-             nextLevelVars = Array(Variable, numNextLevelVars)
-             for i in 1:floor(numCurrentLevelVars/2.0)
-                 nextLevelVars[i] = Variable(model, 0, Inf, :Cont)
-             end
-             for i in 1:floor(numCurrentLevelVars/2.0)
-                 threeDimImplementation(threeDimCones, model, currentLevelVars[2*i-1],
-                                        currentLevelVars[2*i], nextLevelVars[i], iceil((k+1)/2)-skb)
-             end
-             if numCurrentLevelVars%2 == 1
-                 nextLevelVars[numNextLevelVars] = currentLevelVars[numCurrentLevelVars]
-             end
-             numCurrentLevelVars = numNextLevelVars
-             currentLevelVars = nextLevelVars
+            numNextLevelVars = iceil(numCurrentLevelVars/2.0)
+            nextLevelVars = Array(Variable, numNextLevelVars)
+            for i in 1:floor(numCurrentLevelVars/2.0)
+                nextLevelVars[i] = Variable(model, 0, Inf, :Cont)
+            end
+            for i in 1:floor(numCurrentLevelVars/2.0)
+                threeDimImplementation(threeDimCones, model, currentLevelVars[2i-1],
+                                       currentLevelVars[2i], nextLevelVars[i], iceil((k+1)/2)-skb)
+            end
+            if numCurrentLevelVars%2 == 1
+                nextLevelVars[numNextLevelVars] = currentLevelVars[numCurrentLevelVars]
+            end
+            numCurrentLevelVars = numNextLevelVars
+            currentLevelVars = nextLevelVars
          end
          threeDimImplementation(threeDimCones, model, currentLevelVars[1],
                                 currentLevelVars[2], t, iceil((K+1)/2)-skb)
@@ -39,7 +39,7 @@ function addTower(threeDimImplementation::Function, epsilon::Float64=0.01)
 
 end
 
-function SeparableThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::Model, x,  y,  t, k )
+function SeparableThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::Model, x, y, t, k)
     @defVar(model, xs >= 0)
     @defVar(model, ys >= 0)
     @addConstraint(model, xs + ys <= t)
@@ -70,7 +70,7 @@ function BNGLIThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::
         @addConstraint(model,  beta[j+1] >=  currentCos* beta[j] - currentSin*alpha[j])
         @addConstraint(model,  beta[j+1] >= -currentCos* beta[j] + currentSin*alpha[j])
     end
-    @addConstraint(model, t == cos(pi/(2^(k)))*alpha[k+1] + sin(pi/(2^(k)))*beta[k+1])
+    @addConstraint(model, t == cos(pi/(2^k))*alpha[k+1] + sin(pi/(2^k))*beta[k+1])
 end
 
 function BNGLISepThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, model::Model, x, y, t, k)
@@ -86,27 +86,25 @@ function BNGLISepThreeDimCone(threeDimCones::Vector{Vector{JuMP.Variable}}, mode
         currentCos = cos(pi/(2^(j-1)))
         currentSin = sin(pi/(2^(j-1)))
 
-        alpha[j+1] = Variable(model,-Inf,Inf,:Cont)
-        beta[j+1]  = Variable(model,-Inf,Inf,:Cont)
+        alpha[j+1] = Variable(model, -Inf, Inf, :Cont)
+        beta[j+1]  = Variable(model, -Inf, Inf, :Cont)
 
         @addConstraint(model, alpha[j+1] ==  currentCos*alpha[j] + currentSin* beta[j])
         @addConstraint(model,  beta[j+1] >=  currentCos* beta[j] - currentSin*alpha[j])
         @addConstraint(model,  beta[j+1] >= -currentCos* beta[j] + currentSin*alpha[j])
     end
-    @addConstraint(model, t == cos(pi/(2^(k)))*alpha[k+1] + sin(pi/(2^(k)))*beta[k+1])
+    @addConstraint(model, t == cos(pi/(2^k))*alpha[k+1] + sin(pi/(2^k))*beta[k+1])
 end
 
 function implementSOCPSeparableBase(model::Model, y, ys, t, threeDimCones::Vector{Vector{JuMP.Variable}})
     dim = length(y)
-    @addConstraint(model, sum{ys[i], i = 1:dim} <= t)
+    @addConstraint(model, sum{ys[i], i=1:dim} <= t)
 end
 
 function implementSOCPSeparable(model::Model, y, ys, t, threeDimCones::Vector{Vector{JuMP.Variable}})
     dim = length(y)
-    @addConstraint(model, sum{ys[i], i = 1:dim} <= t)
-    for i in 1:dim
-        @addConstraint(model,y[i]^2<=ys[i]*t)
-    end
+    @addConstraint(model, sum{ys[i], i=1:dim} <= t)
+    @addConstraint(model, c[i=1:dim], y[i]^2 <= ys[i]*t)
 end
 
 function implementSOCPStandard(model::Model, y, ys, t, threeDimCones::Vector{Vector{JuMP.Variable}})
@@ -118,7 +116,7 @@ end
 function buildModel(prob::MISOCPInput,SOCPImplementations,
                     solver=MathProgBase.defaultQPsolver,
                     equality=true;
-                    relaxed = false)
+                    relaxed=false)
     model = Model(solver=solver)
 
     nx = size(prob.A, 2)
@@ -133,7 +131,7 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,
         @defVar(model, prob.lz[i] <= z[i=1:nz] <= prob.uz[i], Int)
     end
 
-    @setObjective(model, Min, sum{prob.c[i]*x[i], i = 1:nx} + sum{prob.f[i]*z[i], i = 1:nz})
+    @setObjective(model, Min, sum{prob.c[i]*x[i], i=1:nx} + sum{prob.f[i]*z[i], i=1:nz})
 
     A = prob.A'
     B = prob.B'
@@ -179,16 +177,16 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,
 
         for i in 1:dim
             if equality
-                @addConstraint(model, y[k][i] == sum{ D.nzval[idx]*x[D.rowval[idx]],
-                    idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ E.nzval[idx]*z[E.rowval[idx]],
-                    idx = E.colptr[i]:(E.colptr[i+1]-1)} - d[i] )
+                @addConstraint(model, y[k][i] + d[i] ==
+                    sum{D.nzval[idx]*x[D.rowval[idx]], idx = D.colptr[i]:(D.colptr[i+1]-1)} +
+                    sum{E.nzval[idx]*z[E.rowval[idx]], idx = E.colptr[i]:(E.colptr[i+1]-1)})
             else
-                @addConstraint(model, y[k][i] >= sum{ D.nzval[idx]*x[D.rowval[idx]],
-                    idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ E.nzval[idx]*z[E.rowval[idx]],
-                    idx = E.colptr[i]:(E.colptr[i+1]-1)} - d[i] )
-                @addConstraint(model, y[k][i] >= sum{ - D.nzval[idx]*x[D.rowval[idx]],
-                    idx = D.colptr[i]:(D.colptr[i+1]-1)} + sum{ - E.nzval[idx]*z[E.rowval[idx]],
-                    idx = E.colptr[i]:(E.colptr[i+1]-1)} + d[i] )
+                @addConstraint(model, y[k][i] + d[i] >=
+                    sum{D.nzval[idx]*x[D.rowval[idx]], idx = D.colptr[i]:(D.colptr[i+1]-1)} +
+                    sum{E.nzval[idx]*z[E.rowval[idx]], idx = E.colptr[i]:(E.colptr[i+1]-1)})
+                @addConstraint(model, y[k][i] - d[i] >=
+                    -sum{D.nzval[idx]*x[D.rowval[idx]], idx = D.colptr[i]:(D.colptr[i+1]-1)} +
+                    -sum{E.nzval[idx]*z[E.rowval[idx]], idx = E.colptr[i]:(E.colptr[i+1]-1)})
             end
         end
         @addConstraint(model, t[k] == sum{p[j]*x[j], j=1:nx} + sum{w[j]*z[j], j=1:nz} - q)
@@ -263,7 +261,7 @@ function checkPrimalSolutionQuality(prob::MISOCPInput, x, z)
             squaresum += temp^2
         end
         squaresum -= (dot(p,x)+dot(w,z)-q)^2
-        quadraticinf = max(squaresum,quadraticinf)
+        quadraticinf = max(squaresum, quadraticinf)
     end
     return quadraticinf, linearinf, boundsinf
 
