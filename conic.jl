@@ -156,7 +156,7 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,
     y  = Dict()
     ys = Dict()
     @defVar(model, t[1:nsoc] >= 0)
-    threeDimCones = fill(Vector{JuMP.Variable}[], nsoc)
+    threeDimCones = Array(Vector{Vector{JuMP.Variable}}, nsoc)
     for k in 1:nsoc
 
         D = prob.D[k]' # transposed
@@ -439,7 +439,7 @@ end
 
 function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimplementation,
                       mastersolver=MathProgBase.defaultQPsolver, correctionsolver=MathProgBase.defaultQPsolver,
-                      equality=true; separable = 0)
+                      equality=true; separable=0)
 
      model,  x,  z,  y,  ys,  t,  threeDimCones =
         buildModel(prob, masterimplementation, mastersolver, equality)
@@ -465,7 +465,8 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
                 normy = norm(y_val)
                 if normy >  1e-6 + getValue(threeDimCones[k][i][3])
                     y_val /= normy
-                     @addLazyConstraint(cb, dot(y_val, [threeDimCones[k][i][1],threeDimCones[k][i][2]]) <= threeDimCones[k][i][3] )
+                    @addLazyConstraint(cb, y_val[1]*threeDimCones[k][i][1] + 
+                                           y_val[2]*threeDimCones[k][i][2] <= threeDimCones[k][i][3])
                     separated = true
                 end
             end
@@ -498,7 +499,7 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
                     if y_val[i]^2 > 1e-6 + t_val*ys_val[i]
                         #@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
                         a = y_val[i] / t_val
-                        @addLazyConstraint(cb, 2*a*y[k][i] - a^2*t[k] <= ys[k][i])
+                        @addLazyConstraint(cb, 2a*y[k][i] - a^2*t[k] <= ys[k][i])
                         separated = true
                     end
                 end
@@ -532,7 +533,7 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
                 if y_val[i]^2 > 1e-6 + t_val*ys_val[i]
                     #@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
                     a = y_val[i] / t_val
-                    @addLazyConstraint(cb, 2*a*y[k][i] - a^2*t[k] <= ys[k][i])
+                    @addLazyConstraint(cb, 2a*y[k][i] - a^2*t[k] <= ys[k][i])
                     separated = true
                 end
             end
