@@ -19,10 +19,10 @@ function addTower(threeDimImplementation::Function, epsilon::Float64=0.01)
 
             numNextLevelVars = iceil(numCurrentLevelVars/2.0)
             nextLevelVars = Array(Variable, numNextLevelVars)
-            for i in 1:floor(numCurrentLevelVars/2.0)
+            for i in 1:ifloor(numCurrentLevelVars/2.0)
                 nextLevelVars[i] = Variable(model, 0, Inf, :Cont)
             end
-            for i in 1:floor(numCurrentLevelVars/2.0)
+            for i in 1:ifloor(numCurrentLevelVars/2.0)
                 threeDimImplementation(threeDimCones, model, currentLevelVars[2i-1],
                                        currentLevelVars[2i], nextLevelVars[i], iceil((k+1)/2)-skb)
             end
