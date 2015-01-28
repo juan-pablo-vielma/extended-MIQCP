@@ -651,7 +651,7 @@ function solveInstance(misocp,results,name,solver;cplexbasesolver=true)
         nodes = CPLEX.getnodecnt(m.internalModel)
         bestbound = CPLEX.getobjbound(m.internalModel)
     else
-        nodes = Gurobi.get_node_count(getrawsolver(m.internalModel))
+        nodes = Gurobi.get_node_count(MathProgBase.getrawsolver(m.internalModel))
         bestbound = Gurobi.getobjbound(m.internalModel)
     end
     push!(results, [name,
