@@ -157,6 +157,7 @@ function buildModel(prob::MISOCPInput,SOCPImplementations,
     ys = Dict()
     @defVar(model, t[1:nsoc] >= 0)
     threeDimCones = Array(Vector{Vector{JuMP.Variable}}, nsoc)
+    fill!(threeDimCones,[])
     for k in 1:nsoc
 
         D = prob.D[k]' # transposed
