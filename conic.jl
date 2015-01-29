@@ -274,36 +274,36 @@ function getCorrectedSolution(prob::MISOCPInput, z_lower, z_upper, hz, hx, hy, h
                               ht, hmodel, hthreeDimCones, xstar, zstar, ystar,
                               ysstar, tstar, threeDimConesstar, incumbentobj)
 
-    saveIncumbent = true
+   # saveIncumbent = true
     for i in 1:length(z_lower)
         setLower(hz[i], z_lower[i])
         setUpper(hz[i], z_upper[i])
-        if z_lower[i] < z_upper[i] - 1e-6
-            saveIncumbent = false
-        end
+    #    if z_lower[i] < z_upper[i] - 1e-6
+     #       saveIncumbent = false
+      #  end
     end
 
     status = solve(hmodel)
     obj = Inf
     if  status == :Optimal && getObjectiveValue(hmodel) < incumbentobj
         obj = getObjectiveValue(hmodel)
-        if saveIncumbent
-            for i in 1:length(prob.f)
-                zstar[i] = getValue(hz[i])
-            end
-            for i in 1:length(prob.c)
-                xstar[i] = getValue(hx[i])
-            end
-            nsoc = length(prob.D)
-            for k in 1:nsoc
-                ystar[k]  = getValue(hy[k])
-                ysstar[k] = getValue(hys[k])
-                tstar[k]  = getValue(ht[k])
-                for i in 1:length(hthreeDimCones[k])
-                    threeDimConesstar[k][i] = [getValue(hthreeDimCones[k][i][j]) for j=1:length(hthreeDimCones[k][i])]
-                end
+       # if saveIncumbent
+        for i in 1:length(prob.f)
+            zstar[i] = getValue(hz[i])
+        end
+        for i in 1:length(prob.c)
+            xstar[i] = getValue(hx[i])
+        end
+        nsoc = length(prob.D)
+        for k in 1:nsoc
+            ystar[k]  = getValue(hy[k])
+            ysstar[k] = getValue(hys[k])
+            tstar[k]  = getValue(ht[k])
+            for i in 1:length(hthreeDimCones[k])
+                threeDimConesstar[k][i] = [getValue(hthreeDimCones[k][i][j]) for j=1:length(hthreeDimCones[k][i])]
             end
         end
+       # end
     end
 
     obj
@@ -312,7 +312,7 @@ end
 
 function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplementation,
                        mastersolver=MathProgBase.defaultQPsolver,
-                       correctionsolver=MathProgBase.defaultQPsolver, equality=true)
+                       correctionsolver=MathProgBase.defaultQPsolver, equality=true, integertolerance = 1e-5, feasibilitytolerance = 1e-6, relativegap = 1e-4)
      model,  x,  z,  y,  ys,  t,  threeDimCones =
         buildModel(prob, masterimplementation, mastersolver, equality)
     hmodel, hx, hz, hy, hys, ht, hthreeDimCones =
@@ -332,7 +332,7 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
     function branchcallback(cb)
 
         feas = cbgetintfeas(cb)
-        z_val = getValue(z)
+        #z_val = getValue(z)
 
         feasible = true
         for i in 1:length(prob.f)
@@ -346,11 +346,9 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
             lb = cbgetnodelb(cb)
             ub = cbgetnodeub(cb)
             fixed = true
-            firstfractional = 0
             for i in 1:length(prob.f)
                 if lb[z[i].col] < ub[z[i].col] - 1e-6
                     fixed = false
-                    firstfractional = i
                     break
                 end
             end
@@ -359,9 +357,29 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
                                            [ ub[z[i].col]  for i=1:length(prob.f) ], hz, hx, hy, hys,
                                            ht, hmodel, hthreeDimCones, xstar, zstar, ystar, ysstar,
                                            tstar, threeDimConesstar, incumbentobj)
-                if obj < incumbentobj
-                    addBranch(cb, z[firstfractional] >= floor(z_val[firstfractional]) + 1, obj)
-                    addBranch(cb, z[firstfractional] <= floor(z_val[firstfractional])    , obj)
+                firstfractional = 0
+             #  if obj < incumbentobj
+                if isinf(incumbentobj) || (incumbentobj - obj )/(1e-10+abs(incumbentobj)) > relativegap
+                    feasible = true
+                    for i in 1:length(prob.f)
+                        if abs(zstar[i]-round(zstar[i])) > integertolerance 
+                            feasible = false
+                            firstfractional = i
+                            break
+                        end
+                    end
+                    if feasible
+                        for i in 1:length(prob.f)
+                            zstar[i]=round(zstar[i])
+                        end
+                        incumbentobj = obj
+                        newincumbent = true
+                    else
+                        newub = floor(zstar[firstfractional])
+                        newlb = newub+1
+                        addBranch(cb, z[firstfractional] >= newlb, obj)
+                        addBranch(cb, z[firstfractional] <= newub    , obj)
+                    end
                 end
             end
         end
@@ -383,13 +401,13 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
                 setSolutionValue!(cb, t[k], tstar[k])
             end
 
-            candidateobj = 0
-            for i in 1:length(prob.c)
-                 candidateobj += prob.c[i]*xstar[i]
-            end
-            for i in 1:length(prob.f)
-                 candidateobj += prob.f[i]*zstar[i]
-            end
+            # candidateobj = 0
+            # for i in 1:length(prob.c)
+            #      candidateobj += prob.c[i]*xstar[i]
+            # end
+            # for i in 1:length(prob.f)
+            #      candidateobj += prob.f[i]*zstar[i]
+            # end
             addSolution(cb)
             newincumbent = false
         end
@@ -411,7 +429,7 @@ function liftedlpsolve(prob::MISOCPInput, masterimplementation, correctionimplem
             for i in 1:length(y[k])
                 normy += getValue(y[k][i])^2
             end
-            if sqrt(normy) > 1e-6 + getValue(t[k])
+            if sqrt(normy) > feasibilitytolerance + getValue(t[k])
                 reject = true
                 break
             end
@@ -440,7 +458,7 @@ end
 
 function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimplementation,
                       mastersolver=MathProgBase.defaultQPsolver, correctionsolver=MathProgBase.defaultQPsolver,
-                      equality=true; separable=0)
+                      equality=true; separable=0,feasibilitytolerance = 1e-6)
 
      model,  x,  z,  y,  ys,  t,  threeDimCones =
         buildModel(prob, masterimplementation, mastersolver, equality)
@@ -464,7 +482,7 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
             for i in 1:length(threeDimCones[k])
                 y_val = [getValue(threeDimCones[k][i][1]),getValue(threeDimCones[k][i][2])]
                 normy = norm(y_val)
-                if normy >  1e-6 + getValue(threeDimCones[k][i][3])
+                if normy >  feasibilitytolerance + getValue(threeDimCones[k][i][3])
                     y_val /= normy
                     @addLazyConstraint(cb, y_val[1]*threeDimCones[k][i][1] + 
                                            y_val[2]*threeDimCones[k][i][2] <= threeDimCones[k][i][3])
@@ -497,7 +515,7 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
                 for i in 1:2
                     #a = sqrt((2*y_val[i])^2+(ys_val[i]-t_val)^2)
                     #if a > 1e-6 + t_val +ys_val[i]
-                    if y_val[i]^2 > 1e-6 + t_val*ys_val[i]
+                    if y_val[i]^2 > feasibilitytolerance + t_val*ys_val[i]
                         #@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
                         a = y_val[i] / t_val
                         @addLazyConstraint(cb, 2a*y[k][i] - a^2*t[k] <= ys[k][i])
@@ -531,7 +549,7 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
             for i in 1:dim
                 #a = sqrt((2*y_val[i])^2+(ys_val[i]-t_val)^2)
                 #if a > 1e-6 + t_val +ys_val[i]
-                if y_val[i]^2 > 1e-6 + t_val*ys_val[i]
+                if y_val[i]^2 > feasibilitytolerance + t_val*ys_val[i]
                     #@addLazyConstraint(cb,  4*(y_val[i]/a) * y[k][i] + ((ys_val[i] - t_val)/a)*(ys[k][i]-t[k])<= t[k] +ys[k][i])
                     a = y_val[i] / t_val
                     @addLazyConstraint(cb, 2a*y[k][i] - a^2*t[k] <= ys[k][i])
@@ -560,7 +578,7 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
             y_val = getValue(y[k])[:]
             normy = norm(y_val)
 
-            if normy > 1e-6 + getValue(t[k])
+            if normy > feasibilitytolerance + getValue(t[k])
                 y_val /= normy
                  @addLazyConstraint(cb, dot(y_val, y[k]) <= t[k])
                 separated = true
