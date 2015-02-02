@@ -207,17 +207,28 @@ function test(instancesize, resultfilename, solvers, mark=true, short=true, robu
 	end
 end
 
+for n in 20:10:60
+	test(n, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN])
+end
+test(100, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN])
+test(200, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN],false,false)
+test(300, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN],false,false)
 
-test(20, ARGS[1], [CplexSepLazyBN])
+for n in 20:10:60
+	test(n, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp])
+end
+test(100, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp],false,false)
+test(200, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp],false,false)
 
-# test(20,"results.csv","stats.csv",[ LiftedLpBN,
-# 									CplexSepLazyBN, GurobiSepLazyBN, CplexTowerLazyBN, GurobiTowerLazyBN, CplexTowerSepLazyBN, GurobiTowerSepLazyBN,
-# 									CplexSepLp,	    GurobiSepLp,     CplexTowerLp,     GurobiTowerLp,     CplexTowerSepLp,     GurobiTowerSepLp,
-# 									CplexLp,     GurobiLp,
-# 									CplexQcp,       GurobiQcp    ])
-# test(30,"results.csv","stats.csv",[ LiftedLpBN,
-# 									CplexSepLazyBN, GurobiSepLazyBN, CplexTowerLazyBN, GurobiTowerLazyBN, CplexTowerSepLazyBN, GurobiTowerSepLazyBN,
-# 									CplexSepLp,	    GurobiSepLp,     CplexTowerLp,     GurobiTowerLp,     CplexTowerSepLp,     GurobiTowerSepLp,
-# 									CplexLp,     GurobiLp,
-# 									CplexQcp,       GurobiQcp    ])
+for n in 20:10:60
+	test(n, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp])
+end
+test(100, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp],false,false)
+test(200, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp],false,false)
 
+for n in 20:10:60
+	test(n, ARGS[1], [CplexSepLp, GurobiSepLp])
+end
+test(100, ARGS[1], [CplexSepLp, GurobiSepLp])
+test(200, ARGS[1], [CplexSepLp, GurobiSepLp],false,false)
+test(300, ARGS[1], [CplexSepLp, GurobiSepLp],false,false)
