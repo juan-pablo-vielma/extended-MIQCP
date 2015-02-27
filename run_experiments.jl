@@ -208,27 +208,29 @@ function test(instancesize, resultfilename, solvers, mark=true, short=true, robu
 end
 
 for n in 20:10:60
+	test(n, ARGS[1], [CplexSepLp, GurobiSepLp, CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp, CplexQcp, GurobiQcp])
+end
+
+for n in 20:10:60
+	test(n, ARGS[1], [CplexLp, GurobiLp])
+end
+
+test(100, ARGS[1], [CplexSepLp, GurobiSepLp])
+test(200, ARGS[1], [CplexSepLp, GurobiSepLp],false,false)
+test(300, ARGS[1], [CplexSepLp, GurobiSepLp],false,false)
+
+test(100, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp],false,false)
+test(200, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp],false,false)
+
+test(100, ARGS[1], [CplexLp, GurobiLp],false,false)
+test(200, ARGS[1], [CplexQcp, GurobiQcp],false,false)
+
+test(100, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp],false,false)
+test(200, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp],false,false)
+
+for n in 20:10:60
 	test(n, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN])
 end
 test(100, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN])
 test(200, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN],false,false)
 test(300, ARGS[1], [LiftedLpBN, CplexSepLazyBN, GurobiSepLazyBN],false,false)
-
-for n in 20:10:60
-	test(n, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp])
-end
-test(100, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp],false,false)
-test(200, ARGS[1], [CplexLp, GurobiLp, CplexQcp, GurobiQcp],false,false)
-
-for n in 20:10:60
-	test(n, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp])
-end
-test(100, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp],false,false)
-test(200, ARGS[1], [CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp],false,false)
-
-for n in 20:10:60
-	test(n, ARGS[1], [CplexSepLp, GurobiSepLp])
-end
-test(100, ARGS[1], [CplexSepLp, GurobiSepLp])
-test(200, ARGS[1], [CplexSepLp, GurobiSepLp],false,false)
-test(300, ARGS[1], [CplexSepLp, GurobiSepLp],false,false)
