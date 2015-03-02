@@ -27,6 +27,11 @@ The code for generating the box plots can be found in the **boxplot** folder. Th
 
 ## Generating Performance Profiles
 
+The generation of performance profiles requires the [perprof-py](https://github.com/lpoo/perprof-py) library and the [luatex](http://www.luatex.org) latex compiler. To generate the profiles call
+
+```$ julia createprofiles.jl
+$ ./createprofiles.sh```
+
 
 
 
