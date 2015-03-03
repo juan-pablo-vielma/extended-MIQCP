@@ -5,6 +5,25 @@ This is the code for the paper [Extended Formulations in Mixed Integer Conic Qua
 
 ## Required Software
 
+- [CPLEX](http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/)  12.6.0.0
+- [Gurobi](http://www.gurobi.com) 5.6.3 
+- [Julia](http://julialang.org) 0.3.5
+- [JuMP](https://github.com/JuliaOpt/JuMP.jl) 0.7.4
+- [CPLEX.jl](https://github.com/JuliaOpt/CPLEX.jl) 0.0.12
+- [Gurobi.jl](https://github.com/JuliaOpt/Gurobi.jl) 0.1.24
+
+While the code should generate similar results for near versions, it is recommended to use the specific versions noted above for the closest reproduction of the results. 
+
+In particular, version 0.7.4 of **Julia** can be downloaded from...
+and you can force the use of the appropriate versions of **JuMP**, **CPLEX.jl** and **Gurobi.jl** by installing the latest release versions and calling 
+```julia
+julia> Pkg.pin("JuMP",v"0.7.4")
+julia> Pkg.pin("CPLEX",v"0.0.12")
+julia> Pkg.pin("Gurobi",v"0.1.24")
+```
+
+
+
 ## Downloading the Code
 
 ## Running the Experiments
