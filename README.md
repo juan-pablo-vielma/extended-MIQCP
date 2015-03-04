@@ -25,6 +25,14 @@ julia> Pkg.pin("Gurobi",v"0.1.24")
 
 ## Downloading the Code
 
+You can download the code by calling
+
+```
+$ git clone https://github.com/juan-pablo-vielma/extended-MIQCP.git
+```
+
+You can alternatively download the code from https://github.com/juan-pablo-vielma/extended-MIQCP/releases
+
 ## Running the Experiments
 
 To run the complete set of experiments simply call **run_experiments.jl** with the name of the results file as the only argument. For instance, to save all results to **new_results.csv** call
