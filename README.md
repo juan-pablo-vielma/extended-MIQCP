@@ -27,6 +27,16 @@ julia> Pkg.pin("Gurobi",v"0.1.24")
 
 ## Running the Experiments
 
+To run the complete set of experiments simply call **run_experiments.jl** with the name of the results file as the only argument. For instance, to save all results to **new_results.csv** call
+
+``` $ julia run_experiments.jl new_results.csv ```
+
+To run a partial set of experiments add the instance size and list of solvers. For instance, to run all experiments for n=30 and for CPLEX's and Gurobi's QCP solvers call
+
+``` $ julia run_experiments.jl new_results.csv 30 CplexQcp GurobiQcp```
+
+Finally, to generate MPS files for all instances and reformulations call **run_experiments.jl**  without any arguments. 
+
 ## Generating Tables
 
 Code for generating the tables can be found in the **tables** folder. To generate all tables simply call the code with the name of the results file as the only argument. For instance, to generate the tables from the papers results call
