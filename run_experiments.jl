@@ -256,11 +256,11 @@ function test(instancesize, resultfilename, solvers, mark=true, short=true, robu
 	resultsRobust = {}
 
 	files = filter!(Regex(string("portfolio_",instancesize,"_.*\.por")), readdir("portfolios"))
-
 	if mark
 		for file in files
 			misocp = buildMarkowitzPor(joinpath("portfolios", file))
 			for solver in solvers
+				println(solver)
 				solver(misocp, resultsMark; writefile=writefile, filename=string("mpsfiles/Mark_",file,"_",solver,".mps"))
 				if !writefile
 					println(resultfile, "Mark,", instancesize, ",", file, ",",
@@ -300,7 +300,9 @@ function test(instancesize, resultfilename, solvers, mark=true, short=true, robu
 	end
 end
 
-if length(ARGS) > 0
+if length(ARGS) > 1
+	test(int(ARGS[2]),ARGS[1],[eval(parse(ARGS[i])) for i in 3:length(ARGS)])
+elseif length(ARGS) > 0
 
 	for n in 20:10:60
 		test(n, ARGS[1], [CplexSepLp, GurobiSepLp, CplexTowerLp, GurobiTowerLp, CplexTowerSepLp, GurobiTowerSepLp, CplexQcp, GurobiQcp])
