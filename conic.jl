@@ -656,32 +656,37 @@ function lazycutsolve(prob::MISOCPInput, masterimplementation, correctionimpleme
     return model, x, z, y, ys, t
 end
 
-function solveInstance(misocp,results,name,solver;cplexbasesolver=true)
+function solveInstance(misocp,results,name,solver;cplexbasesolver=true,writefile=false,filename="")
 
     m, x, z, y, ys, t = solver()
+    
     tic()
     solve(m)
     solvetime = toc()
-    quadraticinf, linearinf, boundsinf = checkPrimalSolutionQuality(misocp, getValue(x), getValue(z))
-    nodes = 0
-    bestbound = 0
-    if cplexbasesolver
-        nodes = CPLEX.getnodecnt(m.internalModel)
-        bestbound = CPLEX.getobjbound(m.internalModel)
-    else
-        nodes = Gurobi.get_node_count(MathProgBase.getrawsolver(m.internalModel))
-        bestbound = Gurobi.getobjbound(m.internalModel)
-    end
-    push!(results, [name,
-                    getObjectiveValue(m),
-                    solvetime,
-                    nodes,
-                    quadraticinf,
-                    linearinf,
-                    boundsinf,
-                    bestbound,
-                    100.0 * abs(bestbound - getObjectiveValue(m)) / getObjectiveValue(m)
-                    ])
+    if writefile
+        MathProgBase.writeproblem(m.internalModel,filename)
+    else    
+        quadraticinf, linearinf, boundsinf = checkPrimalSolutionQuality(misocp, getValue(x), getValue(z))
+        nodes = 0
+        bestbound = 0
+        if cplexbasesolver
+            nodes = CPLEX.getnodecnt(m.internalModel)
+            bestbound = CPLEX.getobjbound(m.internalModel)
+        else
+            nodes = Gurobi.get_node_count(MathProgBase.getrawsolver(m.internalModel))
+            bestbound = Gurobi.getobjbound(m.internalModel)
+        end
+        push!(results, [name,
+                        getObjectiveValue(m),
+                        solvetime,
+                        nodes,
+                        quadraticinf,
+                        linearinf,
+                        boundsinf,
+                        bestbound,
+                        100.0 * abs(bestbound - getObjectiveValue(m)) / getObjectiveValue(m)
+                        ])
+    end   
 end
 
 
