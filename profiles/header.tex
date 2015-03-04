@@ -1,0 +1,24 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+
+\pgfplotscreateplotcyclelist{mylist}{%
+    every mark/.append style={solid,fill=teal!80!black},mark=*, mark size=2.5\\%
+    every mark/.append style={solid,fill=orange!80!black},mark=square*, mark size=2.5\\%
+    every mark/.append style={solid,fill=cyan!80!black},mark=triangle*, mark size=2.5\\%
+    every mark/.append style={solid,fill=lime},mark=halfsquare*, mark size=2.5\\%
+    every mark/.append style={solid,fill=red!80!black},mark=pentagon*, mark size=2.5\\%
+    every mark/.append style={solid,fill=yellow!80!black},mark=halfcircle*, mark size=2.5\\%
+    every mark/.append style={solid,fill=gray,rotate=180},mark=halfdiamond*, mark size=2.5\\%
+    every mark/.append style={solid,fill=red!80!black},mark=otimes*, mark size=2.5\\%
+    every mark/.append style={solid,fill=.!80!black},mark=diamond*, mark size=2.5\\%
+    every mark/.append style={solid,fill=.!80!black},mark=halfsquare right*, mark size=2.5\\%
+    every mark/.append style={solid,fill=.!80!black},mark=halfsquare left*, mark size=2.5\\%
+}
+
+\pgfplotsset{compat=newest,compat/show suggested version=false}
+\begin{document}

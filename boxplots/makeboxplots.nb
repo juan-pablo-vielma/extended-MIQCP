@@ -1,0 +1,513 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     18326,        504]
+NotebookOptionsPosition[     17907,        486]
+NotebookOutlinePosition[     18264,        502]
+CellTagsIndexPosition[     18221,        499]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"table", "[", "pairs_", "]"}], ":=", 
+  RowBox[{"TableForm", "[", 
+   RowBox[{
+    RowBox[{"Flatten", "[", "pairs", "]"}], ",", 
+    RowBox[{"TableDirections", "\[Rule]", "Row"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Graphs", "[", 
+   RowBox[{
+   "psizes_", ",", "type_", ",", "methods_", ",", "column_", ",", "labels_", 
+    ",", "filename_"}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"data", ",", "method"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"data", "=", 
+      RowBox[{"Import", "[", 
+       RowBox[{"FileNameJoin", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"ParentDirectory", "[", 
+           RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ",", 
+          "\"\<results.csv\>\""}], "}"}], "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"chartdata", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Pick", "[", 
+           RowBox[{
+            RowBox[{"data", "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", "column"}], "]"}], "]"}], ",", 
+            RowBox[{"MapThread", "[", 
+             RowBox[{"And", ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Map", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"method", "\[Equal]", "#"}], "&"}], ",", 
+                  RowBox[{"data", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "4"}], "]"}], "]"}]}], "]"}], ",", 
+                RowBox[{"Map", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"type", "\[Equal]", "#"}], "&"}], ",", 
+                  RowBox[{"data", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}], ",", 
+                RowBox[{"Map", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"psize", "\[Equal]", "#"}], "&"}], ",", 
+                  RowBox[{"data", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "]"}]}], 
+               "}"}]}], "]"}], ",", "True"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"method", ",", "methods"}], "}"}]}], "]"}], 
+        "\[IndentingNewLine]", ",", 
+        RowBox[{"{", 
+         RowBox[{"psize", ",", "psizes"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Export", "[", 
+      RowBox[{
+       RowBox[{"FileNameJoin", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"NotebookDirectory", "[", "]"}], ",", "filename"}], "}"}], 
+        "]"}], ",", 
+       RowBox[{"BoxWhiskerChart", "[", 
+        RowBox[{"chartdata", ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Notched\>\"", ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Whiskers\>\"", ",", 
+             RowBox[{"Directive", "[", 
+              RowBox[{
+               RowBox[{"Thickness", "[", "0.002", "]"}], ",", " ", "Black"}], 
+              "]"}]}], "}"}], ",", " ", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Fences\>\"", ",", " ", "Black"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<MedianNotch\>\"", ",", "0.5", ",", "White"}], "}"}], 
+           ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<MedianMarker\>\"", ",", 
+             RowBox[{"Directive", "[", 
+              RowBox[{
+               RowBox[{"Thickness", "[", "0.002", "]"}], ",", " ", "Black"}], 
+              "]"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Outliers\>\"", ",", 
+             RowBox[{"Style", "[", 
+              RowBox[{"\"\<\[FilledCircle]\>\"", ",", "Tiny"}], "]"}]}], 
+            "}"}]}], "}"}], ",", 
+         RowBox[{"ScalingFunctions", "\[Rule]", "\"\<Log\>\""}], ",", 
+         RowBox[{"BarSpacing", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{".3", ",", "1.2"}], "}"}]}], ",", 
+         RowBox[{"FrameTicks", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"Automatic", ",", "Automatic"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"None", ",", "None"}], "}"}]}], "}"}]}], ",", 
+         RowBox[{"ChartLabels", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"psizes", ",", 
+            RowBox[{"{", "\"\<\>\"", "}"}]}], "}"}]}], ",", 
+         RowBox[{"PlotRangePadding", "\[Rule]", "0"}], ",", 
+         RowBox[{"ChartLegends", "\[Rule]", 
+          RowBox[{"Placed", "[", 
+           RowBox[{
+            RowBox[{"SwatchLegend", "[", 
+             RowBox[{
+              RowBox[{"Map", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Text", "[", 
+                  RowBox[{"Style", "[", 
+                   RowBox[{"#", ",", 
+                    RowBox[{"FontSize", "\[Rule]", "10"}]}], "]"}], "]"}], 
+                 "&"}], ",", "labels"}], "]"}], ",", 
+              RowBox[{"LegendLayout", "\[Rule]", "table"}]}], "]"}], ",", 
+            "Below"}], "]"}]}], ",", 
+         RowBox[{"FrameStyle", "\[Rule]", 
+          RowBox[{"Thickness", "[", "0.002", "]"}]}], ",", 
+         RowBox[{"ChartStyle", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"EdgeForm", "[", "Black", "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"RGBColor", "[", 
+               RowBox[{"0.404", ",", "0.153", ",", "0.439"}], "]"}], ",", 
+              RowBox[{"RGBColor", "[", 
+               RowBox[{"0.424", ",", "0.576", ",", "0.624"}], "]"}], ",", 
+              RowBox[{"RGBColor", "[", 
+               RowBox[{"1", " ", ",", "0.859", ",", "0.667"}], "]"}], ",", 
+              RowBox[{"RGBColor", "[", 
+               RowBox[{"1", ",", "1", " ", ",", "1"}], "]"}]}], "}"}]}], 
+           "}"}]}]}], "]"}]}], "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input"],
+
+Cell[BoxData[{
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+   "\"\<Mark\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\"", ",", "\"\<CplexLp\>\"", 
+     ",", "\"\<GurobiLp\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
+     "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<MarkQCPvLP.pdf\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+   "\"\<Mark\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\""}],
+     "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\""}], 
+    "}"}], ",", "\"\<MarkQcplifted.pdf\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+   "\"\<Mark\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CplexSepLp\>\"", ",", "\"\<CplexTowerLp\>\"", ",", 
+     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQCP\>\""}], "}"}], ",", "6", 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<SepLP\>\"", ",", "\"\<TowerLP\>\"", ",", "\"\<TowerSepLP\>\"", ",", 
+     "\"\<CP\>\""}], "}"}], ",", "\"\<MarkCplexSepLP.pdf\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+   "\"\<Mark\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<GurobiSepLp\>\"", ",", "\"\<GurobiTowerLp\>\"", ",", 
+     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQCP\>\""}], "}"}], ",", "6", 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<SepLP\>\"", ",", "\"\<TowerLP\>\"", ",", "\"\<TowerSepLP\>\"", ",", 
+     "\"\<CP\>\""}], "}"}], ",", "\"\<MarkGurobiSepLP.pdf\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100"}], 
+    "}"}], ",", "\"\<Mark\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexSepLazyBN\>\"", ",", 
+     "\"\<GurobiSepLazyBN\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXSepLazy\>\"", ",", 
+     "\"\<GurobiSepLazy\>\""}], "}"}], ",", "\"\<MarkLazy.pdf\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100"}], 
+    "}"}], ",", "\"\<Mark\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexSepLp\>\"", ",", 
+     "\"\<GurobiSepLp\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXSepLP\>\"", ",", 
+     "\"\<GurobiSepLP\>\""}], "}"}], ",", "\"\<MarkLiftedAndSep.pdf\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100"}], 
+    "}"}], ",", "\"\<Mark\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CplexSepLazyBN\>\"", ",", "\"\<GurobiSepLazyBN\>\"", ",", 
+     "\"\<CplexSepLp\>\"", ",", "\"\<GurobiSepLp\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CPLEXSepLazy\>\"", ",", "\"\<GurobiSepLazy\>\"", ",", 
+     "\"\<CPLEXSepLP\>\"", ",", "\"\<GurobiSepLP\>\""}], "}"}], ",", 
+   "\"\<MarkLazyAndSep.pdf\>\""}], "]"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Graphs", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+    "\"\<Short\>\"", ",", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\"", ",", "\"\<CplexLp\>\"", 
+      ",", "\"\<GurobiLp\>\""}], "}"}], ",", "6", ",", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
+      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<ShortQCPvLP.pdf\>\""}], "]"}], 
+  " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Graphs", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+    "\"\<Short\>\"", ",", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQCP\>\"", ",", 
+      "\"\<GurobiQCP\>\""}], "}"}], ",", "6", ",", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<LiftedLP\>\"", ",", "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\""}], 
+     "}"}], ",", "\"\<ShortQcplifted.pdf\>\""}], "]"}], 
+  " "}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+   "\"\<Short\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CplexSepLp\>\"", ",", "\"\<CplexTowerLp\>\"", ",", 
+     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQCP\>\""}], "}"}], ",", "6", 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<SepLP\>\"", ",", "\"\<TowerLP\>\"", ",", "\"\<TowerSepLP\>\"", ",", 
+     "\"\<CP\>\""}], "}"}], ",", "\"\<ShortCplexSepLP.pdf\>\""}], "]"}], "\n", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60"}], "}"}], ",", 
+   "\"\<Short\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<GurobiSepLp\>\"", ",", "\"\<GurobiTowerLp\>\"", ",", 
+     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQCP\>\""}], "}"}], ",", "6", 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<SepLP\>\"", ",", "\"\<TowerLP\>\"", ",", "\"\<TowerSepLP\>\"", ",", 
+     "\"\<CP\>\""}], "}"}], ",", "\"\<ShortGurobiSepLP.pdf\>\""}], 
+  "]"}], "\n", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100"}], 
+    "}"}], ",", "\"\<Short\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexSepLazyBN\>\"", ",", 
+     "\"\<GurobiSepLazyBN\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXSepLazy\>\"", ",", 
+     "\"\<GurobiSepLazy\>\""}], "}"}], ",", "\"\<ShortLazy.pdf\>\""}], 
+  "]"}], "\n", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100"}], 
+    "}"}], ",", "\"\<Short\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexSepLp\>\"", ",", 
+     "\"\<GurobiSepLp\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXSepLP\>\"", ",", 
+     "\"\<GurobiSepLP\>\""}], "}"}], ",", "\"\<ShortLiftedAndSep.pdf\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100"}], 
+    "}"}], ",", "\"\<Short\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CplexSepLazyBN\>\"", ",", "\"\<GurobiSepLazyBN\>\"", ",", 
+     "\"\<CplexSepLp\>\"", ",", "\"\<GurobiSepLp\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CPLEXSepLazy\>\"", ",", "\"\<GurobiSepLazy\>\"", ",", 
+     "\"\<CPLEXSepLP\>\"", ",", "\"\<GurobiSepLP\>\""}], "}"}], ",", 
+   "\"\<ShortLazyAndSep.pdf\>\""}], "]"}], "\[IndentingNewLine]"}], "Input"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Graphs", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100", ",", 
+      "200"}], "}"}], ",", "\"\<Robust\>\"", ",", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\"", ",", "\"\<CplexLp\>\"", 
+      ",", "\"\<GurobiLp\>\""}], "}"}], ",", "6", ",", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
+      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<RobustQCPvLP.pdf\>\""}], "]"}], 
+  " "}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100", ",", 
+     "200"}], "}"}], ",", "\"\<Robust\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\""}],
+     "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\""}], 
+    "}"}], ",", "\"\<RobustQcplifted.pdf\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100", ",", 
+     "200"}], "}"}], ",", "\"\<Robust\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CplexSepLp\>\"", ",", "\"\<CplexTowerLp\>\"", ",", 
+     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQCP\>\""}], "}"}], ",", "6", 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<SepLP\>\"", ",", "\"\<TowerLP\>\"", ",", "\"\<TowerSepLP\>\"", ",", 
+     "\"\<CP\>\""}], "}"}], ",", "\"\<RobustCplexSepLP.pdf\>\""}], 
+  "]"}], "\n", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100", ",", 
+     "200"}], "}"}], ",", "\"\<Robust\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<GurobiSepLp\>\"", ",", "\"\<GurobiTowerLp\>\"", ",", 
+     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQCP\>\""}], "}"}], ",", "6", 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<SepLP\>\"", ",", "\"\<TowerLP\>\"", ",", "\"\<TowerSepLP\>\"", ",", 
+     "\"\<CP\>\""}], "}"}], ",", "\"\<RobustGurobiSepLP.pdf\>\""}], 
+  "]"}], "\n", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100", ",", "200", 
+     ",", "300"}], "}"}], ",", "\"\<Robust\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexSepLazyBN\>\"", ",", 
+     "\"\<GurobiSepLazyBN\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXSepLazy\>\"", ",", 
+     "\"\<GurobiSepLazy\>\""}], "}"}], ",", "\"\<RobustLazy.pdf\>\""}], 
+  "]"}], "\n", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100", ",", "200", 
+     ",", "300"}], "}"}], ",", "\"\<Robust\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexSepLp\>\"", ",", 
+     "\"\<GurobiSepLp\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<LiftedLP\>\"", ",", "\"\<CPLEXSepLP\>\"", ",", 
+     "\"\<GurobiSepLP\>\""}], "}"}], ",", "\"\<RobustLiftedAndSep.pdf\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Graphs", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "20", ",", "30", ",", "40", ",", "50", ",", "60", ",", "100", ",", "200", 
+     ",", "300"}], "}"}], ",", "\"\<Robust\>\"", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CplexSepLazyBN\>\"", ",", "\"\<GurobiSepLazyBN\>\"", ",", 
+     "\"\<CplexSepLp\>\"", ",", "\"\<GurobiSepLp\>\""}], "}"}], ",", "6", ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<CPLEXSepLazy\>\"", ",", "\"\<GurobiSepLazy\>\"", ",", 
+     "\"\<CPLEXSepLP\>\"", ",", "\"\<GurobiSepLP\>\""}], "}"}], ",", 
+   "\"\<RobustLazyAndSep.pdf\>\""}], "]"}], "\[IndentingNewLine]"}], "Input"]
+},
+WindowSize->{1315, 1172},
+WindowMargins->{{533, Automatic}, {65, Automatic}},
+FrontEndVersion->"10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (June 27, \
+2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 234, 6, 28, "Input"],
+Cell[795, 28, 5750, 143, 233, "Input"],
+Cell[6548, 173, 3701, 99, 216, "Input"],
+Cell[10252, 274, 3725, 101, 233, "Input"],
+Cell[13980, 377, 3923, 107, 250, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
