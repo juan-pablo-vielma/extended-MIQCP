@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.5.25)  2 MAR 2015 17:30
+This is LuaTeX, Version beta-0.79.1 (TeX Live 2014) (rev 4971)  (format=lualatex 2014.5.25)  5 MAR 2015 15:22
  restricted \write18 enabled.
 **formulations.tex
 (./formulations.tex
@@ -510,8 +510,7 @@ File: tikzlibraryplotmarks.code.tex 2008/01/09 v3.0.0 (rcs-revision 1.1)
 (/usr/local/texlive/2014/texmf-dist/tex/generic/pgf/libraries/pgflibraryplotmar
 ks.code.tex
 File: pgflibraryplotmarks.code.tex 2013/07/20 v3.0.0 (rcs-revision 1.13)
-)))
-No file formulations.aux.
+))) (./formulations.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
@@ -524,7 +523,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
-ABD: EveryShipout initializing macros
+ ABD: EveryShipout initializing macros
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count116
@@ -576,7 +575,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (./formulations.aux))
 
 Here is how much of LuaTeX's memory you used:
- 31186 strings out of 494695
+ 31191 strings out of 494695
  745128,8504848 words of node,token memory allocated
  312231 words of node memory still in use:
    182 hlist, 2 vlist, 1 rule, 17 disc, 18 math, 526 glue, 14 kern, 147 glyph, 9
