@@ -184,7 +184,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
     "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
-     "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<MarkQcpvLP.pdf\>\""}], 
+     "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<MarkQCPvLP.pdf\>\""}], 
   "]"}], "\[IndentingNewLine]", 
  RowBox[{"Graphs", "[", 
   RowBox[{
@@ -286,7 +286,7 @@ Cell[BoxData[{
     RowBox[{"{", 
      RowBox[{
      "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
-      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<ShortQcpvLP.pdf\>\""}], "]"}], 
+      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<ShortQCPvLP.pdf\>\""}], "]"}], 
   " "}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Graphs", "[", 
@@ -390,7 +390,7 @@ Cell[BoxData[{
     RowBox[{"{", 
      RowBox[{
      "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
-      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<RobustQcpvLP.pdf\>\""}], "]"}], 
+      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<RobustQCPvLP.pdf\>\""}], "]"}], 
   " "}], "\[IndentingNewLine]", 
  RowBox[{"Graphs", "[", 
   RowBox[{
