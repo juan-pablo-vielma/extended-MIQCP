@@ -231,7 +231,7 @@ function CplexQcp(misocp, results; writefile=false,filename="")
 						  [implementSOCPStandard],
 						  CplexSolver(CPX_PARAM_TILIM=timelimit, CPX_PARAM_THREADS=1, CPX_PARAM_MIPDISPLAY=2, CPX_PARAM_MIQCPSTRAT=CplexQCP)
 						  )
-	solveInstance(misocp, results, "CplexQCP", solver, cplexbasesolver=true;writefile=writefile,filename=filename)
+	solveInstance(misocp, results, "CplexQcp", solver, cplexbasesolver=true;writefile=writefile,filename=filename)
 end
 
 function GurobiQcp(misocp, results; writefile=false,filename="")
@@ -244,7 +244,7 @@ function GurobiQcp(misocp, results; writefile=false,filename="")
 						  [implementSOCPStandard],
 						  GurobiSolver(TimeLimit=timelimit, Threads=1, MIQCPMethod=GurobiQCP)
 						  )
-	solveInstance(misocp, results, "GurobiQCP", solver, cplexbasesolver=false;writefile=writefile,filename=filename)
+	solveInstance(misocp, results, "GurobiQcp", solver, cplexbasesolver=false;writefile=writefile,filename=filename)
 end
 
 function test(instancesize, resultfilename, solvers, mark=true, short=true, robust=true; writefile=false)

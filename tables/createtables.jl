@@ -69,13 +69,13 @@ else
 
 	for k in [20,30,40,50,60]
 		println(k)
-		printStats(data,string("mark",k,".tex"),"Mark",["CplexQCP", "GurobiQCP", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
+		printStats(data,string("mark",k,".tex"),"Mark",["CplexQcp", "GurobiQcp", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
 								      ["CPLEXCP", "GurobiCP", "CPLEXLP", "GurobiLP","LiftedLP","CPLEXSepLp", "CPLEXTowerLp", "CPLEXTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp", "CPLEXSepLazy","GurobiSepLazy"],floatformat);
 		println(k)
-		printStats(data,string("short",k,".tex"),"Short",["CplexQCP", "GurobiQCP", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
+		printStats(data,string("short",k,".tex"),"Short",["CplexQcp", "GurobiQcp", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
 								      ["CPLEXCP", "GurobiCP", "CPLEXLP", "GurobiLP","LiftedLP","CPLEXSepLp", "CPLEXTowerLp", "CPLEXTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp", "CPLEXSepLazy","GurobiSepLazy"],floatformat);
 		println(k)
-		printStats(data,string("robust",k,".tex"),"Robust",["CplexQCP", "GurobiQCP", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
+		printStats(data,string("robust",k,".tex"),"Robust",["CplexQcp", "GurobiQcp", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
 								      ["CPLEXCP", "GurobiCP", "CPLEXLP", "GurobiLP","LiftedLP","CPLEXSepLp", "CPLEXTowerLp", "CPLEXTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp", "CPLEXSepLazy","GurobiSepLazy"],floatformat);
 	end
 
@@ -87,14 +87,14 @@ else
 		printStats(data,string("short",k,".tex"),"Short",[ "LiftedLpBN","CplexSepLp","GurobiSepLp","CplexSepLazyBN","GurobiSepLazyBN"],k,6,4,3,
 								      ["LiftedLP","CPLEXSepLp","GurobiSepLp","CPLEXSepLazy","GurobiSepLazy"],floatformat);
 		println(k)
-		printStats(data,string("robust",k,".tex"),"Robust",["CplexQCP", "GurobiQCP", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
+		printStats(data,string("robust",k,".tex"),"Robust",["CplexQcp", "GurobiQcp", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
 								      ["CPLEXCP", "GurobiCP", "CPLEXLP", "GurobiLP","LiftedLP","CPLEXSepLp", "CPLEXTowerLp", "CPLEXTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp", "CPLEXSepLazy","GurobiSepLazy"],floatformat);
 	end
 
 	for k in [200]
 
 		println(k)
-		printStats(data,string("robust",k,".tex"),"Robust",["CplexQCP", "GurobiQCP", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
+		printStats(data,string("robust",k,".tex"),"Robust",["CplexQcp", "GurobiQcp", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,6,4,3,
 								      ["CPLEXCP", "GurobiCP", "CPLEXLP", "GurobiLP","LiftedLP","CPLEXSepLp", "CPLEXTowerLp", "CPLEXTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp", "CPLEXSepLazy","GurobiSepLazy"],floatformat);
 	end
 
@@ -124,14 +124,14 @@ else
 		printStats(data,string("qualityshort",k,".tex"),"Short",[ "LiftedLpBN","CplexSepLp","GurobiSepLp","CplexSepLazyBN","GurobiSepLazyBN"],k,8,4,3,
 								      ["LiftedLP","CPLEXSepLp","GurobiSepLp","CPLEXSepLazy","GurobiSepLazy"],scientificformat,false);
 		println(k)
-		printStats(data,string("qualityrobust",k,".tex"),"Robust",["CplexQCP", "GurobiQCP", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,8,4,3,
+		printStats(data,string("qualityrobust",k,".tex"),"Robust",["CplexQcp", "GurobiQcp", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,8,4,3,
 								      ["CPLEXCP", "GurobiCP", "CPLEXLP", "GurobiLP","LiftedLP","CPLEXSepLp", "CPLEXTowerLp", "CPLEXTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp", "CPLEXSepLazy","GurobiSepLazy"],scientificformat,false);
 	end
 
 	for k in [200]
 
 		println(k)
-		printStats(data,string("qualityrobust",k,".tex"),"Robust",["CplexQCP", "GurobiQCP", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,8,4,3,
+		printStats(data,string("qualityrobust",k,".tex"),"Robust",["CplexQcp", "GurobiQcp", "CplexLp", "GurobiLp", "LiftedLpBN","CplexSepLp", "CplexTowerLp", "CplexTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp","CplexSepLazyBN","GurobiSepLazyBN" ],k,8,4,3,
 								      ["CPLEXCP", "GurobiCP", "CPLEXLP", "GurobiLP","LiftedLP","CPLEXSepLp", "CPLEXTowerLp", "CPLEXTowerSepLp","GurobiSepLp", "GurobiTowerLp", "GurobiTowerSepLp", "CPLEXSepLazy","GurobiSepLazy"],scientificformat,false);
 	end
 

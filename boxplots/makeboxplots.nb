@@ -179,12 +179,12 @@ Cell[BoxData[{
    "\"\<Mark\>\"", ",", 
    RowBox[{"{", 
     RowBox[{
-    "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\"", ",", "\"\<CplexLp\>\"", 
+    "\"\<CplexQcp\>\"", ",", "\"\<GurobiQcp\>\"", ",", "\"\<CplexLp\>\"", 
      ",", "\"\<GurobiLp\>\""}], "}"}], ",", "6", ",", 
    RowBox[{"{", 
     RowBox[{
     "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
-     "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<MarkQCPvLP.pdf\>\""}], 
+     "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<MarkQcpvLP.pdf\>\""}], 
   "]"}], "\[IndentingNewLine]", 
  RowBox[{"Graphs", "[", 
   RowBox[{
@@ -193,7 +193,7 @@ Cell[BoxData[{
    "\"\<Mark\>\"", ",", 
    RowBox[{"{", 
     RowBox[{
-    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\""}],
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQcp\>\"", ",", "\"\<GurobiQcp\>\""}],
      "}"}], ",", "6", ",", 
    RowBox[{"{", 
     RowBox[{
@@ -207,7 +207,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
     "\"\<CplexSepLp\>\"", ",", "\"\<CplexTowerLp\>\"", ",", 
-     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQCP\>\""}], "}"}], ",", "6", 
+     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQcp\>\""}], "}"}], ",", "6", 
    ",", 
    RowBox[{"{", 
     RowBox[{
@@ -222,7 +222,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
     "\"\<GurobiSepLp\>\"", ",", "\"\<GurobiTowerLp\>\"", ",", 
-     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQCP\>\""}], "}"}], ",", "6", 
+     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQcp\>\""}], "}"}], ",", "6", 
    ",", 
    RowBox[{"{", 
     RowBox[{
@@ -281,12 +281,12 @@ Cell[BoxData[{
     "\"\<Short\>\"", ",", 
     RowBox[{"{", 
      RowBox[{
-     "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\"", ",", "\"\<CplexLp\>\"", 
+     "\"\<CplexQcp\>\"", ",", "\"\<GurobiQcp\>\"", ",", "\"\<CplexLp\>\"", 
       ",", "\"\<GurobiLp\>\""}], "}"}], ",", "6", ",", 
     RowBox[{"{", 
      RowBox[{
      "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
-      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<ShortQCPvLP.pdf\>\""}], "]"}], 
+      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<ShortQcpvLP.pdf\>\""}], "]"}], 
   " "}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Graphs", "[", 
@@ -296,8 +296,8 @@ Cell[BoxData[{
     "\"\<Short\>\"", ",", 
     RowBox[{"{", 
      RowBox[{
-     "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQCP\>\"", ",", 
-      "\"\<GurobiQCP\>\""}], "}"}], ",", "6", ",", 
+     "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQcp\>\"", ",", 
+      "\"\<GurobiQcp\>\""}], "}"}], ",", "6", ",", 
     RowBox[{"{", 
      RowBox[{
      "\"\<LiftedLP\>\"", ",", "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\""}], 
@@ -311,7 +311,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
     "\"\<CplexSepLp\>\"", ",", "\"\<CplexTowerLp\>\"", ",", 
-     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQCP\>\""}], "}"}], ",", "6", 
+     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQcp\>\""}], "}"}], ",", "6", 
    ",", 
    RowBox[{"{", 
     RowBox[{
@@ -325,7 +325,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
     "\"\<GurobiSepLp\>\"", ",", "\"\<GurobiTowerLp\>\"", ",", 
-     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQCP\>\""}], "}"}], ",", "6", 
+     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQcp\>\""}], "}"}], ",", "6", 
    ",", 
    RowBox[{"{", 
     RowBox[{
@@ -385,12 +385,12 @@ Cell[BoxData[{
       "200"}], "}"}], ",", "\"\<Robust\>\"", ",", 
     RowBox[{"{", 
      RowBox[{
-     "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\"", ",", "\"\<CplexLp\>\"", 
+     "\"\<CplexQcp\>\"", ",", "\"\<GurobiQcp\>\"", ",", "\"\<CplexLp\>\"", 
       ",", "\"\<GurobiLp\>\""}], "}"}], ",", "6", ",", 
     RowBox[{"{", 
      RowBox[{
      "\"\<CPLEXCP\>\"", ",", "\"\<GurobiCP\>\"", ",", "\"\<CPLEXLP\>\"", ",", 
-      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<RobustQCPvLP.pdf\>\""}], "]"}], 
+      "\"\<GurobiLP\>\""}], "}"}], ",", "\"\<RobustQcpvLP.pdf\>\""}], "]"}], 
   " "}], "\[IndentingNewLine]", 
  RowBox[{"Graphs", "[", 
   RowBox[{
@@ -400,7 +400,7 @@ Cell[BoxData[{
      "200"}], "}"}], ",", "\"\<Robust\>\"", ",", 
    RowBox[{"{", 
     RowBox[{
-    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQCP\>\"", ",", "\"\<GurobiQCP\>\""}],
+    "\"\<LiftedLpBN\>\"", ",", "\"\<CplexQcp\>\"", ",", "\"\<GurobiQcp\>\""}],
      "}"}], ",", "6", ",", 
    RowBox[{"{", 
     RowBox[{
@@ -415,7 +415,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
     "\"\<CplexSepLp\>\"", ",", "\"\<CplexTowerLp\>\"", ",", 
-     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQCP\>\""}], "}"}], ",", "6", 
+     "\"\<CplexTowerSepLp\>\"", ",", "\"\<CplexQcp\>\""}], "}"}], ",", "6", 
    ",", 
    RowBox[{"{", 
     RowBox[{
@@ -431,7 +431,7 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{
     "\"\<GurobiSepLp\>\"", ",", "\"\<GurobiTowerLp\>\"", ",", 
-     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQCP\>\""}], "}"}], ",", "6", 
+     "\"\<GurobiTowerSepLp\>\"", ",", "\"\<GurobiQcp\>\""}], "}"}], ",", "6", 
    ",", 
    RowBox[{"{", 
     RowBox[{
@@ -504,7 +504,7 @@ Notebook[{
 Cell[558, 20, 234, 6, 28, "Input"],
 Cell[795, 28, 5750, 143, 233, "Input"],
 Cell[6548, 173, 3701, 99, 216, "Input"],
-Cell[10252, 274, 3725, 101, 233, "Input"],
+Cell[10252, 274, 3725, 101, 216, "Input"],
 Cell[13980, 377, 3923, 107, 250, "Input"]
 }
 ]
