@@ -53,7 +53,7 @@ Code for generating the tables can be found in the **tables** folder. To generat
 
 To generate a custom table use as arguments: the result file name, instance size, instance class (Mark, Short or Robust) and the list of solvers. The code then generates two files named **test_time.tex** and **test_quality.tex**, which contain the tables. For instance calling 
 
-```$ julia createtables.jl ../results.csv 30 Mark CplexQCP GurobiQCP ```
+```$ julia createtables.jl ../results.csv 30 Mark CplexQcp GurobiQcp ```
 
 generates the tables for the Classical instances for n=30 and for CPLEX's and Gurobi's QCP solvers.
 
