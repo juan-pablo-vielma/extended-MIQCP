@@ -63,8 +63,8 @@ const floatformat = "%.2f"
 const scientificformat = "%.2e"
 
 if length(ARGS) > 1
-	printStats(data,string("test_time.tex"),ARGS[3],ARGS[4:end],int(ARGS[2]),6,4,3,ARGS[3:end],floatformat);
-	printStats(data,string("test_quality.tex"),ARGS[3],ARGS[4:end],int(ARGS[2]),8,4,3,ARGS[3:end],floatformat);
+	printStats(data,string("test_time.tex"),ARGS[3],ARGS[4:end],int(ARGS[2]),6,4,3,ARGS[4:end],floatformat);
+	printStats(data,string("test_quality.tex"),ARGS[3],ARGS[4:end],int(ARGS[2]),8,4,3,ARGS[4:end],floatformat);
 else
 
 	for k in [20,30,40,50,60]
