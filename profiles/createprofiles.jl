@@ -21,7 +21,7 @@ end
 data = readdlm("../results.csv",',');
 
 
-solvers = ["LiftedLpBN","CplexSepLp","GurobiSepLp","CplexSepLazyBN","GurobiSepLazyBN","CplexQCP", "GurobiQCP","CplexLp", "GurobiLp","CplexTowerLp", "CplexTowerSepLp","GurobiTowerLp", "GurobiTowerSepLp"]
+solvers = ["LiftedLpBN","CplexSepLp","GurobiSepLp","CplexSepLazyBN","GurobiSepLazyBN","CplexQcp", "GurobiQcp","CplexLp", "GurobiLp","CplexTowerLp", "CplexTowerSepLp","GurobiTowerLp", "GurobiTowerSepLp"]
 names = ["LiftedLP","CPLEXSepLP","GurobiSepLP","CPLEXSepLazy","GurobiSepLazy","CPLEXCP", "GurobiCP","CPLEXLP", "GurobiLP","CPLEXTowerLP", "CPLEXTowerSepLP", "GurobiTowerLP", "GurobiTowerSepLP"]
 
 
